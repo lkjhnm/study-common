@@ -13,6 +13,8 @@ public class DefaultJwtValidator implements PkiBasedValidator<Claims>, SigningKe
 
 	private final Map<String, PublicKey> publicKeys = new HashMap<>();
 
+	private final JwtParser parser = Jwts.parserBuilder().setSigningKeyResolver(this).build();
+
 	@Override
 	public void addPublicKeys(Map<String, PublicKey> publicKeys) {
 		this.publicKeys.putAll(publicKeys);
@@ -29,6 +31,7 @@ public class DefaultJwtValidator implements PkiBasedValidator<Claims>, SigningKe
 	}
 
 	private PublicKey getKey(JwsHeader header) {
+		//todo: lock to process when add PublicKeys
 		PublicKey publicKey = this.publicKeys.get(header.getKeyId());
 		if (publicKey == null) {
 			throw new JwtException(String.format("No such public-key from given kid [%s]", header.getKeyId()));
@@ -38,7 +41,6 @@ public class DefaultJwtValidator implements PkiBasedValidator<Claims>, SigningKe
 
 	@Override
 	public Claims validate(String token) {
-		return Jwts.parserBuilder().setSigningKeyResolver(this).build()
-		           .parseClaimsJws(token).getBody();
+		return parser.parseClaimsJws(token).getBody();
 	}
 }
