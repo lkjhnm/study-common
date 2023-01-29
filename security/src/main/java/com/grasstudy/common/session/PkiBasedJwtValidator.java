@@ -7,7 +7,7 @@ import java.security.PublicKey;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DefaultJwtValidator implements PkiBasedValidator<Claims>, SigningKeyResolver {
+public class PkiBasedJwtValidator implements PkiBasedValidator<Claims>, SigningKeyResolver {
 
 	private final Map<String, PublicKey> publicKeys = new HashMap<>();
 
