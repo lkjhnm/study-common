@@ -3,7 +3,9 @@ package com.grasstudy.common.session;
 import java.security.PublicKey;
 import java.util.Map;
 
-public interface PkiBasedValidator<T> extends TokenValidator<T> {
+public interface PkiBasedValidator<T> extends AuthenticationValidator<T> {
 
-	void addPublicKeys(Map<String, PublicKey> publicKeys);
+	void setPublicKeys(Map<String, PublicKey> publicKeys);
+
+	PublicKey getPublicKey(String kid);
 }

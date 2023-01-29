@@ -24,7 +24,7 @@ class DefaultJwtValidatorTest {
 		String jwtToken = generateToken(keyPair, kid);
 
 		DefaultJwtValidator jwtValidator = new DefaultJwtValidator();
-		jwtValidator.addPublicKeys(Map.of(kid, keyPair.getPublic()));
+		jwtValidator.setPublicKeys(Map.of(kid, keyPair.getPublic()));
 		jwtValidator.validate(jwtToken);
 	}
 
@@ -36,7 +36,7 @@ class DefaultJwtValidatorTest {
 		String testToken = generateToken(rightPair, kid);
 
 		DefaultJwtValidator jwtValidator = new DefaultJwtValidator();
-		jwtValidator.addPublicKeys(Map.of(kid, wrongPair.getPublic()));
+		jwtValidator.setPublicKeys(Map.of(kid, wrongPair.getPublic()));
 		Assertions.assertThrows(JwtException.class, () -> jwtValidator.validate(testToken));
 	}
 

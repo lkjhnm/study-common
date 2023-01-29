@@ -1,5 +1,5 @@
 package com.grasstudy.common.session;
 
-public interface TokenValidator<T> {
+public interface AuthenticationValidator<T> {
 	T validate(String token);
 }
