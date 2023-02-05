@@ -36,12 +36,12 @@
         <repository>
             <id>grasstudy-release</id>
             <name>nexus-releases</name>
-            <url>http://localhost:8081/repository/grasstudy-release/</url>
+            <url>http://ec2-43-200-232-163.ap-northeast-2.compute.amazonaws.com/nexus/repository/grasstudy-release/</url>
         </repository>
         <snapshotRepository>
             <id>grasstudy-snapshot</id>
             <name>nexus-snapshots</name>
-            <url>http://localhost:8081/repository/grasstudy-snapshot/</url>
+            <url>http://ec2-43-200-232-163.ap-northeast-2.compute.amazonaws.com/nexus/repository/grasstudy-snapshot/</url>
         </snapshotRepository>
     </distributionManagement>
 </project>
