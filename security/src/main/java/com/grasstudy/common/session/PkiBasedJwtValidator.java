@@ -9,13 +9,13 @@ import java.util.Map;
 
 public class PkiBasedJwtValidator implements PkiBasedValidator<Claims>, SigningKeyResolver {
 
-	private final Map<String, PublicKey> publicKeys = new HashMap<>();
+	private final Map<String, PublicKey> signingKeys = new HashMap<>();
 
 	private final JwtParser parser = Jwts.parserBuilder().setSigningKeyResolver(this).build();
 
 	@Override
-	public void setPublicKeys(Map<String, PublicKey> publicKeys) {
-		this.publicKeys.putAll(publicKeys);
+	public void setSigningKeys(Map<String, PublicKey> signingKeys) {
+		this.signingKeys.putAll(signingKeys);
 	}
 
 	@Override
@@ -30,7 +30,7 @@ public class PkiBasedJwtValidator implements PkiBasedValidator<Claims>, SigningK
 
 	@Override
 	public PublicKey getPublicKey(String kid) {
-		PublicKey publicKey = this.publicKeys.get(kid);
+		PublicKey publicKey = this.signingKeys.get(kid);
 		if (publicKey == null) {
 			throw new JwtException(String.format("No such public-key from given kid [%s]", kid));
 		}

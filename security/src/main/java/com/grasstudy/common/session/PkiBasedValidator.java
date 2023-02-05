@@ -5,7 +5,7 @@ import java.util.Map;
 
 public interface PkiBasedValidator<T> extends AuthenticationValidator<T> {
 
-	void setPublicKeys(Map<String, PublicKey> publicKeys);
+	void setSigningKeys(Map<String, PublicKey> signingKeys);
 
 	PublicKey getPublicKey(String kid);
 }

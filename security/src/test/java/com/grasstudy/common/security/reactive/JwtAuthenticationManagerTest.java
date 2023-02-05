@@ -36,7 +36,7 @@ class JwtAuthenticationManagerTest {
 
 	PkiBasedValidator<Claims> validator() {
 		PkiBasedJwtValidator pkiBasedJwtValidator = new PkiBasedJwtValidator();
-		pkiBasedJwtValidator.setPublicKeys(Map.of("pairA", MockData.pairA.getPublic()));
+		pkiBasedJwtValidator.setSigningKeys(Map.of("pairA", MockData.pairA.getPublic()));
 		return pkiBasedJwtValidator;
 	}
 }
