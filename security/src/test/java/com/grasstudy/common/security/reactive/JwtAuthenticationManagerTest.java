@@ -8,6 +8,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
 import reactor.test.StepVerifier;
@@ -34,12 +35,12 @@ class JwtAuthenticationManagerTest {
 		JwtAuthenticationManager manager = new JwtAuthenticationManager(validator());
 		manager.authenticate(new JwtAuthentication(invalidToken))
 		       .as(StepVerifier::create)
-		       .expectError(JwtException.class)
+		       .expectError(AuthenticationServiceException.class)
 		       .verify();
 	}
 
 	@Test
-	void authenticate_empty() {
+	void authenticate_non_jwt_authentication() {
 		JwtAuthenticationManager manager = new JwtAuthenticationManager(validator());
 		AnonymousAuthenticationToken anonymous = new AnonymousAuthenticationToken("test", "test",
 				AuthorityUtils.createAuthorityList("ANONYMOUS"));
@@ -47,9 +48,17 @@ class JwtAuthenticationManagerTest {
 		manager.authenticate(
 				       anonymous)
 		       .as(StepVerifier::create)
-		       .expectNextMatches(authentication ->
-				       !authentication.isAuthenticated() && authentication.equals(anonymous))
-		       .verifyComplete();
+		       .expectError(AuthenticationServiceException.class)
+		       .verify();
+	}
+
+	@Test
+	void authenticate_no_token_authentication() {
+		JwtAuthenticationManager manager = new JwtAuthenticationManager(validator());
+		manager.authenticate(new JwtAuthentication(null))
+		       .as(StepVerifier::create)
+		       .expectError(AuthenticationServiceException.class)
+		       .verify();
 	}
 
 	PkiBasedValidator<Claims> validator() {

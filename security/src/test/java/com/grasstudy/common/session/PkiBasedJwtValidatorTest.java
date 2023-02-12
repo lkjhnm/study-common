@@ -5,6 +5,7 @@ import com.grasstudy.common.support.MockData;
 import io.jsonwebtoken.JwtException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.security.authentication.AuthenticationServiceException;
 
 import java.security.KeyPair;
 import java.util.Map;
@@ -32,6 +33,6 @@ class PkiBasedJwtValidatorTest {
 
 		PkiBasedJwtValidator jwtValidator = new PkiBasedJwtValidator();
 		jwtValidator.setSigningKeys(Map.of(kid, wrongPair.getPublic()));
-		Assertions.assertThrows(JwtException.class, () -> jwtValidator.validate(testToken));
+		Assertions.assertThrows(AuthenticationServiceException.class, () -> jwtValidator.validate(testToken));
 	}
 }

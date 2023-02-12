@@ -1,6 +1,7 @@
 package com.grasstudy.common.session;
 
 import io.jsonwebtoken.*;
+import org.springframework.security.authentication.AuthenticationServiceException;
 
 import java.security.Key;
 import java.security.PublicKey;
@@ -39,6 +40,10 @@ public class PkiBasedJwtValidator implements PkiBasedValidator<Claims>, SigningK
 
 	@Override
 	public Claims validate(String token) {
-		return parser.parseClaimsJws(token).getBody();
+		try {
+			return parser.parseClaimsJws(token).getBody();
+		} catch (JwtException e) {
+			throw new AuthenticationServiceException(e.getLocalizedMessage(), e);
+		}
 	}
 }
