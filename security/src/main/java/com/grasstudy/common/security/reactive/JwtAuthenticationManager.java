@@ -21,8 +21,8 @@ public class JwtAuthenticationManager implements ReactiveAuthenticationManager {
 		           .map(credentials -> {
 			           JwtAuthentication jwtAuthentication = new JwtAuthentication(credentials, validator.validate(credentials));
 			           jwtAuthentication.setAuthenticated(true);
-			           return jwtAuthentication;
-		           });
+			           return (Authentication) jwtAuthentication;
+		           }).defaultIfEmpty(authentication);
 
 	}
 

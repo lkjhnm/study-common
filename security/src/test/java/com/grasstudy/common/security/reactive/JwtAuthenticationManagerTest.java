@@ -7,9 +7,13 @@ import com.grasstudy.common.support.MockData;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import org.junit.jupiter.api.Test;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.AuthorityUtils;
 import reactor.test.StepVerifier;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 class JwtAuthenticationManagerTest {
@@ -32,6 +36,20 @@ class JwtAuthenticationManagerTest {
 		       .as(StepVerifier::create)
 		       .expectError(JwtException.class)
 		       .verify();
+	}
+
+	@Test
+	void authenticate_empty() {
+		JwtAuthenticationManager manager = new JwtAuthenticationManager(validator());
+		AnonymousAuthenticationToken anonymous = new AnonymousAuthenticationToken("test", "test",
+				AuthorityUtils.createAuthorityList("ANONYMOUS"));
+		anonymous.setAuthenticated(false);
+		manager.authenticate(
+				       anonymous)
+		       .as(StepVerifier::create)
+		       .expectNextMatches(authentication ->
+				       !authentication.isAuthenticated() && authentication.equals(anonymous))
+		       .verifyComplete();
 	}
 
 	PkiBasedValidator<Claims> validator() {
